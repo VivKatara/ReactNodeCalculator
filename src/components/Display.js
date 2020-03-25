@@ -1,11 +1,14 @@
 import React from 'react'
+import styled from '@emotion/styled'
 
-class Display extends React.Component {
+export default class Display extends React.Component {
     render () {
         return (
-            <h1>{this.props.total}</h1>
+            <Header>{this.props.total}</Header>
         )
     }
 }
 
-export default Display
+const Header = styled.h1`
+    color: black
+`
