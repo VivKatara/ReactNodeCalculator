@@ -1,4 +1,9 @@
-import { CLEAR_CALCULATOR, HANDLE_NUMBER } from '../actions/types';
+import {
+  CLEAR_CALCULATOR,
+  HANDLE_NUMBER,
+  HANDLE_OPERATION,
+  HANDLE_EQUAL,
+} from '../actions/types';
 
 const initialState = {
   previousNumber: 0,
@@ -24,6 +29,19 @@ export default function calculatorReducer(state = initialState, action) {
         needNew: action.payload.hasOwnProperty('needNew')
           ? action.payload.needNew
           : state.needNew,
+      };
+    case HANDLE_OPERATION:
+      return {
+        ...state,
+        previousNumber: action.payload.previousNumber,
+        operation: action.payload.operation,
+        needNew: action.payload.needNew,
+      };
+    case HANDLE_EQUAL:
+      return {
+        ...state,
+        currentNumber: action.payload.currentNumber,
+        operation: action.payload.operation,
       };
     default:
       return state;

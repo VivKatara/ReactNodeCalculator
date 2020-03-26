@@ -5,34 +5,29 @@ import { connect } from 'react-redux';
 import {
   clearCalculator,
   handleCalculatorNumber,
+  handleCalculatorOperation,
+  handleCalculatorEqual,
 } from '../actions/calculatorAction';
 
 class Calculator extends React.Component {
   constructor(props) {
     super(props);
-    //   this.state = {
-    //     previousNumber: 0,
-    //     currentNumber: 0,
-    //     operation: null,
-    //     needNew: true,
-    //   };
-
     this.handleClear = this.handleClear.bind(this);
-    // this.handleOperation = this.handleOperation.bind(this);
-    // this.handleNumber = this.handleNumber.bind(this);
-    // this.handleEqual = this.handleEqual.bind(this);
+    this.handleOperation = this.handleOperation.bind(this);
+    this.handleNumber = this.handleNumber.bind(this);
+    this.handleEqual = this.handleEqual.bind(this);
   }
 
-  // getOperations() {
-  //   const operations = ['+', '-', '*', '/'];
-  //   return operations.map((op, index) => {
-  //     return (
-  //       <Operation key={index} value={op} onClick={this.handleOperation}>
-  //         {op}
-  //       </Operation>
-  //     );
-  //   });
-  // }
+  getOperations() {
+    const operations = ['+', '-', '*', '/'];
+    return operations.map((op, index) => {
+      return (
+        <Operation key={index} value={op} onClick={this.handleOperation}>
+          {op}
+        </Operation>
+      );
+    });
+  }
 
   getNumbers() {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -46,26 +41,20 @@ class Calculator extends React.Component {
   }
 
   handleClear() {
-    // this.setState({
-    //   previousNumber: 0,
-    //   currentNumber: 0,
-    //   operation: null,
-    //   needNew: true,
-    // });
     this.props.clearCalculator();
     console.log(this.props);
   }
 
-  // handleOperation(event) {
-  //   if (!this.state.needNew) {
-  //     this.setState({
-  //       previousNumber: this.state.currentNumber,
-  //       operation: event.target.value,
-  //       needNew: true,
-  //     });
-  //   }
-  // }
-
+  handleOperation(event) {
+    if (!this.props.needNew) {
+      const newData = {
+        previousNumber: this.props.currentNumber,
+        operation: event.target.value,
+        needNew: true,
+      };
+      this.props.handleCalculatorOperation(newData);
+    }
+  }
   handleNumber(num) {
     const newData = {};
     if (this.props.needNew) {
@@ -75,41 +64,28 @@ class Calculator extends React.Component {
       newData.currentNumber = this.props.currentNumber * 10 + num;
     }
     this.props.handleCalculatorNumber(newData);
-
-    // if (this.state.needNew) {
-    //   this.setState({ currentNumber: num, needNew: false });
-    // } else {
-    //   this.setState({
-    //     currentNumber: this.state.currentNumber * 10 + num,
-    //   });
-    // }
   }
 
-  // handleEqual() {
-  //   if (this.state.operation === '+') {
-  //     this.setState({
-  //       currentNumber: this.state.previousNumber + this.state.currentNumber,
-  //       operation: null,
-  //     });
-  //   } else if (this.state.operation === '-') {
-  //     this.setState({
-  //       currentNumber: this.state.previousNumber - this.state.currentNumber,
-  //       operation: null,
-  //     });
-  //   } else if (this.state.operation === '*') {
-  //     this.setState({
-  //       currentNumber: this.state.previousNumber * this.state.currentNumber,
-  //       operation: null,
-  //     });
-  //   } else if (this.state.operation === '/') {
-  //     this.setState({
-  //       currentNumber: this.state.previousNumber / this.state.currentNumber,
-  //       operation: null,
-  //     });
-  //   } else {
-  //     // Here, this.state.operation must be null
-  //   }
-  // }
+  handleEqual() {
+    if (this.props.operation != null) {
+      const newData = { operation: null };
+      if (this.props.operation === '+') {
+        newData.currentNumber =
+          this.props.previousNumber + this.props.currentNumber;
+      } else if (this.props.operation === '-') {
+        newData.currentNumber =
+          this.props.previousNumber - this.props.currentNumber;
+      } else if (this.props.operation === '*') {
+        newData.currentNumber =
+          this.props.previousNumber * this.props.currentNumber;
+      } else if (this.props.operation === '/') {
+        newData.currentNumber =
+          this.props.previousNumber / this.props.currentNumber;
+      }
+
+      this.props.handleCalculatorEqual(newData);
+    }
+  }
 
   render() {
     console.log('HERE');
@@ -121,9 +97,9 @@ class Calculator extends React.Component {
         <Clear onClick={this.handleClear}>Clear</Clear>
         <NumbersAndOperations>
           <NumberRow>{this.getNumbers()}</NumberRow>
-          {/* <OperationRow>{this.getOperations()}</OperationRow> */}
+          <OperationRow>{this.getOperations()}</OperationRow>
         </NumbersAndOperations>
-        {/* <Equal onClick={this.handleEqual}>=</Equal> */}
+        <Equal onClick={this.handleEqual}>=</Equal>
       </CalculatorDisplay>
     );
   }
@@ -131,6 +107,9 @@ class Calculator extends React.Component {
 
 Calculator.propTypes = {
   clearCalculator: PropTypes.func.isRequired,
+  handleCalculatorNumber: PropTypes.func.isRequired,
+  handleCalculatorOperation: PropTypes.func.isRequired,
+  handleCalculatorEqual: PropTypes.func.isRequired,
   previousNumber: PropTypes.number.isRequired,
   currentNumber: PropTypes.number.isRequired,
   operation: PropTypes.string,
@@ -147,6 +126,8 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   clearCalculator,
   handleCalculatorNumber,
+  handleCalculatorOperation,
+  handleCalculatorEqual,
 })(Calculator);
 
 const CalculatorDisplay = styled.div`
