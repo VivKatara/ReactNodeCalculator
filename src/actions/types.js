@@ -1,0 +1,2 @@
+export const CLEAR_CALCULATOR = 'CLEAR_CALCULATOR';
+export const HANDLE_NUMBER = 'HANDLE_NUMBER';
