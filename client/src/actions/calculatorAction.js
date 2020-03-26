@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   CLEAR_CALCULATOR,
   HANDLE_NUMBER,
@@ -9,10 +10,9 @@ export const clearCalculator = () => dispatch => {
   const action = {
     type: CLEAR_CALCULATOR,
     payload: {
-      previousNumber: 0,
+      numbers: [],
+      operations: [],
       currentNumber: 0,
-      operation: null,
-      needNew: true,
     },
   };
   dispatch(action);
@@ -22,12 +22,10 @@ export const handleCalculatorNumber = data => dispatch => {
   const action = {
     type: HANDLE_NUMBER,
     payload: {
+      numbers: data.numbers,
       currentNumber: data.currentNumber,
     },
   };
-  if (data.hasOwnProperty('needNew')) {
-    action.payload.needNew = data.needNew;
-  }
   dispatch(action);
 };
 
@@ -35,21 +33,27 @@ export const handleCalculatorOperation = data => dispatch => {
   const action = {
     type: HANDLE_OPERATION,
     payload: {
-      previousNumber: data.previousNumber,
-      operation: data.operation,
-      needNew: data.needNew,
+      operations: data.operations,
     },
   };
   dispatch(action);
 };
 
 export const handleCalculatorEqual = data => dispatch => {
-  const action = {
-    type: HANDLE_EQUAL,
-    payload: {
-      currentNumber: data.currentNumber,
-      operation: data.operation,
-    },
-  };
-  dispatch(action);
+  axios
+    .post('http://localhost:5000/equal', {
+      numbers: data.numbers,
+      operations: data.operations,
+    })
+    .then(res => {
+      const action = {
+        type: HANDLE_EQUAL,
+        payload: {
+          numbers: [res.data.value],
+          operations: [],
+          currentNumber: res.data.value,
+        },
+      };
+      dispatch(action);
+    });
 };
