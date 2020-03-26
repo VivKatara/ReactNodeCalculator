@@ -41,7 +41,7 @@ export const handleCalculatorOperation = data => dispatch => {
 
 export const handleCalculatorEqual = data => dispatch => {
   axios
-    .post('http://localhost:5000/equal', {
+    .post('/equal', {
       numbers: data.numbers,
       operations: data.operations,
     })
