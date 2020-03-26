@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const calculate = require('./functions/calculate');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,8 +17,7 @@ app.get('/', (req, res) => {
 app.post('/equal', (req, res) => {
   res.json({
     success: true,
-    value: 4, //This is the change that needs to be made, we need to
-    //calculate actual value that must be returned from req.body.numbers and req.body.operations
+    value: calculate.equal(req.body.numbers, req.body.operations),
   });
 });
 
