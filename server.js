@@ -11,10 +11,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// app.get('/', (req, res) => {
-//   res.send('Hello world!!!');
-// });
-
 app.post('/equal', (req, res) => {
   res.json({
     success: true,

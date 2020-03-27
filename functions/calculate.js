@@ -43,7 +43,7 @@ function calculateEqual(numbers, operations) {
       }
       numberQueue.dequeue();
     } else {
-      if (counter > operationLength) {
+      if (counter >= operationLength) {
         if (operation === '+') {
           stack.push(firstItem + secondItem);
           numberQueue.dequeue();
