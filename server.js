@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+app.get('/example', (req, res) => {
+  res.send('Hello example!!');
+});
+
 app.listen(port, () => {
   console.log(`Server up on port ${port}`);
 });
