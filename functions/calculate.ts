@@ -42,7 +42,7 @@ function calculateEqual(numbers: Array<number>, operations: Array<string>) {
         stack.push(firstItem / secondItem);
       }
       numberQueue.dequeue();
-    } else {
+    } else if (operation === "+" || operation === "-") {
       if (counter >= operationLength) {
         if (operation === "+") {
           stack.push(firstItem + secondItem);

@@ -15,7 +15,7 @@ export class Queue {
     return this.elements.length === 0;
   }
   public peek() {
-    const item: number | string = !this.isEmpty()
+    const item: number | string | undefined = !this.isEmpty()
       ? this.elements[0]
       : undefined;
     return item;
