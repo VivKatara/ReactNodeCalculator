@@ -1,53 +1,53 @@
-//calculator functions
-const Queue = require('../classes/Queue');
+// Calculator functions
+import { Queue } from "../classes/Queue";
 
 module.exports = {
-  equal: function(numbers, operations) {
+  equal: function (numbers: Array<number>, operations: Array<string>) {
     return calculateEqual(numbers, operations);
   },
 };
 
-function calculateEqual(numbers, operations) {
+function calculateEqual(numbers: Array<number>, operations: Array<string>) {
   const numberQueue = new Queue();
   const operationQueue = new Queue();
-  const stack = [];
-  const operationLength = operations.length;
-  for (num in numbers) {
+  const stack: Array<number> = [];
+  const operationLength: number = operations.length;
+  for (const num in numbers) {
     numberQueue.enqueue(numbers[num]);
   }
-  for (op in operations) {
+  for (const op in operations) {
     operationQueue.enqueue(operations[op]);
   }
-  let counter = 1;
+  let counter: number = 1;
   while (!operationQueue.isEmpty()) {
-    let firstItem = 0;
+    let firstItem: any = 0;
     if (stack.length > 0) {
       firstItem = stack.pop();
     } else {
       firstItem = numberQueue.dequeue();
     }
-    const secondItem = numberQueue.peek();
+    const secondItem: any = numberQueue.peek();
     const operation = operationQueue.dequeue();
-    if (operation === '*') {
+    if (operation === "*") {
       if (counter === operationLength) {
         numberQueue.enqueue(firstItem * secondItem);
       } else {
         stack.push(firstItem * secondItem);
       }
       numberQueue.dequeue();
-    } else if (operation === '/') {
+    } else if (operation === "/") {
       if (counter === operationLength) {
         numberQueue.enqueue(firstItem / secondItem);
       } else {
         stack.push(firstItem / secondItem);
       }
       numberQueue.dequeue();
-    } else {
+    } else if (operation === "+" || operation === "-") {
       if (counter >= operationLength) {
-        if (operation === '+') {
+        if (operation === "+") {
           stack.push(firstItem + secondItem);
           numberQueue.dequeue();
-        } else if (operation === '-') {
+        } else if (operation === "-") {
           stack.push(firstItem - secondItem);
           numberQueue.dequeue();
         }
