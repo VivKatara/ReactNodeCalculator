@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import {
-  clearCalculator,
+  startClearCalculator,
   handleCalculatorNumber,
   handleCalculatorOperation,
   handleCalculatorEqual,
@@ -41,7 +41,7 @@ class Calculator extends React.Component {
   }
 
   handleClear() {
-    this.props.clearCalculator();
+    this.props.startClearCalculator();
   }
 
   handleNumber(num) {
@@ -82,7 +82,6 @@ class Calculator extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <CalculatorDisplay>
         <NumberDisplay>{this.props.currentNumber}</NumberDisplay>
@@ -98,7 +97,7 @@ class Calculator extends React.Component {
 }
 
 Calculator.propTypes = {
-  clearCalculator: PropTypes.func.isRequired,
+  startClearCalculator: PropTypes.func.isRequired,
   handleCalculatorNumber: PropTypes.func.isRequired,
   handleCalculatorOperation: PropTypes.func.isRequired,
   handleCalculatorEqual: PropTypes.func.isRequired,
@@ -107,18 +106,21 @@ Calculator.propTypes = {
   currentNumber: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   numbers: state.calculatorState.numbers,
   operations: state.calculatorState.operations,
   currentNumber: state.calculatorState.currentNumber,
 });
 
-export default connect(mapStateToProps, {
-  clearCalculator,
-  handleCalculatorNumber,
-  handleCalculatorOperation,
-  handleCalculatorEqual,
-})(Calculator);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  startClearCalculator: () => dispatch(startClearCalculator()),
+  handleCalculatorNumber: (data) => dispatch(handleCalculatorNumber(data)),
+  handleCalculatorOperation: (data) =>
+    dispatch(handleCalculatorOperation(data)),
+  handleCalculatorEqual: (data) => dispatch(handleCalculatorEqual(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
 
 const CalculatorDisplay = styled.div`
   display: flex;

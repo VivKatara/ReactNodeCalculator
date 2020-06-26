@@ -6,54 +6,58 @@ import {
   HANDLE_EQUAL,
 } from './types';
 
-export const clearCalculator = () => dispatch => {
-  const action = {
-    type: CLEAR_CALCULATOR,
-    payload: {
-      numbers: [],
-      operations: [],
-      currentNumber: 0,
-    },
-  };
-  dispatch(action);
+export const clearCalculator = () => ({
+  type: CLEAR_CALCULATOR,
+  payload: {
+    numbers: [],
+    operations: [],
+    currentNumber: 0,
+  },
+});
+
+export const calculatorNumber = (data) => ({
+  type: HANDLE_NUMBER,
+  payload: {
+    numbers: data.numbers,
+    currentNumber: data.currentNumber,
+  },
+});
+
+export const calculatorOperation = (data) => ({
+  type: HANDLE_OPERATION,
+  payload: {
+    operations: data.operations,
+  },
+});
+
+export const calculatorEqual = (data) => ({
+  type: HANDLE_EQUAL,
+  payload: {
+    numbers: [data.value],
+    operations: [],
+    currentNumber: data.value,
+  },
+});
+
+export const startClearCalculator = () => (dispatch) => {
+  dispatch(clearCalculator());
 };
 
-export const handleCalculatorNumber = data => dispatch => {
-  const action = {
-    type: HANDLE_NUMBER,
-    payload: {
-      numbers: data.numbers,
-      currentNumber: data.currentNumber,
-    },
-  };
-  dispatch(action);
+export const handleCalculatorNumber = (data) => (dispatch) => {
+  dispatch(calculatorNumber(data));
 };
 
-export const handleCalculatorOperation = data => dispatch => {
-  const action = {
-    type: HANDLE_OPERATION,
-    payload: {
-      operations: data.operations,
-    },
-  };
-  dispatch(action);
+export const handleCalculatorOperation = (data) => (dispatch) => {
+  dispatch(calculatorOperation(data));
 };
 
-export const handleCalculatorEqual = data => dispatch => {
+export const handleCalculatorEqual = (data) => (dispatch) => {
   axios
     .post('/equal', {
       numbers: data.numbers,
       operations: data.operations,
     })
-    .then(res => {
-      const action = {
-        type: HANDLE_EQUAL,
-        payload: {
-          numbers: [res.data.value],
-          operations: [],
-          currentNumber: res.data.value,
-        },
-      };
-      dispatch(action);
+    .then((res) => {
+      dispatch(calculatorEqual(res.data));
     });
 };
