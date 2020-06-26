@@ -7,9 +7,13 @@ import {
   handleCalculatorNumber,
   handleCalculatorOperation,
   handleCalculatorEqual,
-} from '../actions/calculatorAction';
+} from '../actions/calculator';
 
-class Calculator extends React.Component {
+interface CalculatorProps {}
+
+interface CalculatorState {}
+
+class Calculator extends React.Component<CalculatorProps, CalculatorState> {
   constructor(props) {
     super(props);
     this.handleClear = this.handleClear.bind(this);
@@ -105,6 +109,25 @@ Calculator.propTypes = {
   operations: PropTypes.array.isRequired,
   currentNumber: PropTypes.number.isRequired,
 };
+
+interface LinkStateProp {
+  numbers: Array<number>;
+  operations: Array<string>;
+  currentNumber: number;
+}
+
+interface LinkDispatchProps {
+  startClearCalculator: () => void;
+  handleCalculaotrNumber: (data: {
+    numbers: Array<number>;
+    currentNumber: number;
+  }) => void;
+  handleCalculatorOperation: (data: { operations: Array<string> }) => void;
+  handleCalculatorEqual: (data: {
+    numbers: Array<number>;
+    operations: Array<string>;
+  }) => void;
+}
 
 const mapStateToProps = (state, ownProps) => ({
   numbers: state.calculatorState.numbers,

@@ -4,14 +4,19 @@ import {
   HANDLE_OPERATION,
   HANDLE_EQUAL,
 } from '../actions/types';
+import { Calculator } from '../types/Calculator';
+import { CalculatorActionTypes } from '../types/actions';
 
-const initialState = {
+const initialState: Calculator = {
   numbers: [],
   operations: [],
   currentNumber: 0,
 };
 
-export default function calculatorReducer(state = initialState, action) {
+export default function calculatorReducer(
+  state = initialState,
+  action: CalculatorActionTypes
+): Calculator {
   switch (action.type) {
     case CLEAR_CALCULATOR:
       return {
