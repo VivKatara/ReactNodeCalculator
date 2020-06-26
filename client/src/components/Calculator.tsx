@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import {
@@ -8,13 +7,19 @@ import {
   handleCalculatorOperation,
   handleCalculatorEqual,
 } from '../actions/calculator';
+import { AppState } from '../store/configureStore';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppActions } from '../types/actions';
+import { bindActionCreators } from 'redux';
 
 interface CalculatorProps {}
 
 interface CalculatorState {}
 
-class Calculator extends React.Component<CalculatorProps, CalculatorState> {
-  constructor(props) {
+type Props = CalculatorProps & LinkStateProps & LinkDispatchProps;
+
+class Calculator extends React.Component<Props, CalculatorState> {
+  constructor(props: Props) {
     super(props);
     this.handleClear = this.handleClear.bind(this);
     this.handleOperation = this.handleOperation.bind(this);
@@ -23,7 +28,7 @@ class Calculator extends React.Component<CalculatorProps, CalculatorState> {
   }
 
   getOperations() {
-    const operations = ['+', '-', '*', '/'];
+    const operations: Array<string> = ['+', '-', '*', '/'];
     return operations.map((op, index) => {
       return (
         <Operation key={index} value={op} onClick={this.handleOperation}>
@@ -34,7 +39,7 @@ class Calculator extends React.Component<CalculatorProps, CalculatorState> {
   }
 
   getNumbers() {
-    const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const numbers: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     return numbers.map((num, index) => {
       return (
         <Number key={index} onClick={() => this.handleNumber(num)}>
@@ -48,8 +53,8 @@ class Calculator extends React.Component<CalculatorProps, CalculatorState> {
     this.props.startClearCalculator();
   }
 
-  handleNumber(num) {
-    const newData = {};
+  handleNumber(num: number) {
+    const newData: any = {};
     if (this.props.numbers.length === this.props.operations.length) {
       newData.currentNumber = num;
       newData.numbers = [...this.props.numbers, num];
@@ -63,7 +68,7 @@ class Calculator extends React.Component<CalculatorProps, CalculatorState> {
     this.props.handleCalculatorNumber(newData);
   }
 
-  handleOperation(event) {
+  handleOperation(event: any) {
     if (this.props.numbers.length > this.props.operations.length) {
       const newData = {
         operations: [...this.props.operations, event.target.value],
@@ -100,17 +105,7 @@ class Calculator extends React.Component<CalculatorProps, CalculatorState> {
   }
 }
 
-Calculator.propTypes = {
-  startClearCalculator: PropTypes.func.isRequired,
-  handleCalculatorNumber: PropTypes.func.isRequired,
-  handleCalculatorOperation: PropTypes.func.isRequired,
-  handleCalculatorEqual: PropTypes.func.isRequired,
-  numbers: PropTypes.array.isRequired,
-  operations: PropTypes.array.isRequired,
-  currentNumber: PropTypes.number.isRequired,
-};
-
-interface LinkStateProp {
+interface LinkStateProps {
   numbers: Array<number>;
   operations: Array<string>;
   currentNumber: number;
@@ -118,7 +113,7 @@ interface LinkStateProp {
 
 interface LinkDispatchProps {
   startClearCalculator: () => void;
-  handleCalculaotrNumber: (data: {
+  handleCalculatorNumber: (data: {
     numbers: Array<number>;
     currentNumber: number;
   }) => void;
@@ -129,18 +124,26 @@ interface LinkDispatchProps {
   }) => void;
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (
+  state: AppState,
+  ownProps: CalculatorProps
+): LinkStateProps => ({
   numbers: state.calculatorState.numbers,
   operations: state.calculatorState.operations,
   currentNumber: state.calculatorState.currentNumber,
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  startClearCalculator: () => dispatch(startClearCalculator()),
-  handleCalculatorNumber: (data) => dispatch(handleCalculatorNumber(data)),
-  handleCalculatorOperation: (data) =>
-    dispatch(handleCalculatorOperation(data)),
-  handleCalculatorEqual: (data) => dispatch(handleCalculatorEqual(data)),
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<any, any, AppActions>,
+  ownProps: CalculatorProps
+): LinkDispatchProps => ({
+  startClearCalculator: bindActionCreators(startClearCalculator, dispatch),
+  handleCalculatorNumber: bindActionCreators(handleCalculatorNumber, dispatch),
+  handleCalculatorOperation: bindActionCreators(
+    handleCalculatorOperation,
+    dispatch
+  ),
+  handleCalculatorEqual: bindActionCreators(handleCalculatorEqual, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calculator);

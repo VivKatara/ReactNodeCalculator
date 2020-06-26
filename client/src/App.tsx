@@ -5,7 +5,9 @@ import store from './store/configureStore';
 
 import './App.css';
 
-function App() {
+interface Props {}
+
+const App: React.FC<Props> = () => {
   return (
     <Provider store={store}>
       <div className="App">
@@ -13,6 +15,6 @@ function App() {
       </div>
     </Provider>
   );
-}
+};
 
 export default App;
