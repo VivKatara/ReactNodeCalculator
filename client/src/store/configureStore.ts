@@ -1,7 +1,7 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk, { ThunkMiddleware } from 'redux-thunk';
-import calculatorReducer from '../reducers/calculator';
-import { AppActions } from '../types/actions';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk, { ThunkMiddleware } from "redux-thunk";
+import calculatorReducer from "../reducers/calculator";
+import { AppActions } from "../types/actions";
 
 export const rootReducer = combineReducers({
   calculatorState: calculatorReducer,

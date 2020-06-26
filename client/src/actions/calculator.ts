@@ -64,9 +64,10 @@ export const handleCalculatorOperation = (data: {
   dispatch(calculatorOperation(data));
 };
 
-export const handleCalculatorEqual = (data: Calculator) => (
-  dispatch: Dispatch<AppActions>
-) => {
+export const handleCalculatorEqual = (data: {
+  numbers: Array<number>;
+  operations: Array<string>;
+}) => (dispatch: Dispatch<AppActions>) => {
   axios
     .post('/equal', {
       numbers: data.numbers,

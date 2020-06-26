@@ -26,6 +26,8 @@
     "wait-on": "4.0.2"
   },
   "devDependencies": {
-    "concurrently": "5.2.0"
+    "concurrently": "5.2.0",
+    "tslint": "6.1.2",
+    "typescript": "3.9.5"
   }
 }

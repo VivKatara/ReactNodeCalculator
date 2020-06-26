@@ -1,9 +1,9 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import Calculator from './components/Calculator';
-import store from './store/configureStore';
+import React from "react";
+import { Provider } from "react-redux";
+import Calculator from "./components/Calculator";
+import store from "./store/configureStore";
 
-import './App.css';
+import "./App.css";
 
 interface Props {}
 

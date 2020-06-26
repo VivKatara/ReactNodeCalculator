@@ -3,9 +3,9 @@ import {
   HANDLE_NUMBER,
   HANDLE_OPERATION,
   HANDLE_EQUAL,
-} from '../actions/types';
-import { Calculator } from '../types/Calculator';
-import { CalculatorActionTypes } from '../types/actions';
+} from "../types/actions";
+import { Calculator } from "../types/Calculator";
+import { CalculatorActionTypes } from "../types/actions";
 
 const initialState: Calculator = {
   numbers: [],

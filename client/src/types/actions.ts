@@ -1,9 +1,9 @@
-import { Calculator } from './Calculator';
+import { Calculator } from "./Calculator";
 
-export const CLEAR_CALCULATOR = 'CLEAR_CALCULATOR';
-export const HANDLE_NUMBER = 'HANDLE_NUMBER';
-export const HANDLE_OPERATION = 'HANDLE_OPERATION';
-export const HANDLE_EQUAL = 'HANDLE_EQUAL';
+export const CLEAR_CALCULATOR = "CLEAR_CALCULATOR";
+export const HANDLE_NUMBER = "HANDLE_NUMBER";
+export const HANDLE_OPERATION = "HANDLE_OPERATION";
+export const HANDLE_EQUAL = "HANDLE_EQUAL";
 
 export interface ClearCalculatorAction {
   type: typeof CLEAR_CALCULATOR;
